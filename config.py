@@ -14,7 +14,8 @@ class Config(object):
     FSUB_CHANNEL = int(os.environ.get("FSUB_CHANNEL", "-1002730333831")) 
     DB_CHANNEL = int(os.environ.get("DB_CHANNEL", "-1002605527708")) 
     FSUB_ON = True 
-
+    UPDATE_CHANNEL = "Hindi_Tv_Verse"
+    
     # --- Links ---
     CHNL_LNK = "https://t.me/Hindi_Tv_Verse"
     SUPP_LNK = "https://t.me/SerialVerse_support"
