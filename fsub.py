@@ -1,26 +1,20 @@
-import asyncio
 from pyrogram.errors import UserNotParticipant
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import Config
 
 async def get_fsub(client, message, data):
-    """
-    Check if user is subscribed. 
-    Returns True if joined, False if not.
-    """
     try:
-        # ID ko integer mein convert karna zaroori hai
-        user_status = await client.get_chat_member(int(Config.FSUB_CHANNEL), message.from_user.id)
+        # User ka status check karein
+        user = await client.get_chat_member(int(Config.FSUB_CHANNEL), message.from_user.id)
         
-        # Agar user kicked hai toh access nahi dena
-        if user_status.status == "kicked":
-            await message.reply_text("<b>sᴏʀʀʏ, ʏᴏᴜ ᴀʀᴇ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ.</b>")
-            return False
-            
-        return True # User joined hai
+        # Agar user ka status niche diye gaye list mein hai, toh wo JOINED hai
+        if user.status in ["member", "administrator", "creator"]:
+            return True 
+        else:
+            raise UserNotParticipant
 
     except (UserNotParticipant, Exception):
-        # Yahan tabhi aayega jab user joined nahi hoga ya koi error aayega
+        # Ye block tabhi chalega jab user JOINED NAHI hoga
         join_button = InlineKeyboardMarkup([
             [InlineKeyboardButton("📢 ᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ", url=Config.CHNL_LNK)],
             [InlineKeyboardButton("🔄 ᴛʀʏ ᴀɢᴀɪɴ", url=f"https://t.me/{client.me.username}?start={data}")]
