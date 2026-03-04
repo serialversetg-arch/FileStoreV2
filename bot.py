@@ -114,4 +114,4 @@ async def cb_handler(client, query: CallbackQuery):
 
 if __name__ == "__main__":
     keep_alive()
-    bot.run)
+    bot.run()
